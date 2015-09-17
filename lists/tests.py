@@ -95,6 +95,8 @@ class HomePageTest(TestCase):
         request =HttpRequest()
         response = home_page(request)
         self.assertIn('oh tidak', response.content.decode())
+    def test_coba_tag_monitoring(self):
+        pass
                                            
 	
 class ItemModelTest(TestCase):
