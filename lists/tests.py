@@ -29,7 +29,7 @@ class HomePageTest(TestCase):
              comment ='sibuk tapi santai'
         elif item > 4:
              comment = 'oh tidak' 
-        expected_html = render_to_string('home.html',{'comment':comment})
+        expected_html = render_to_string('home.html')
         self.assertEqual(response.content.decode(), expected_html)
 
     def test_home_page_can_save_a_POST_request(self):
@@ -58,43 +58,43 @@ class HomePageTest(TestCase):
         response = home_page(request)
 
         self.assertEqual(response.status_code, 302)
-        self.assertEqual(response['location'], '/')
+        self.assertEqual(response['location'], '/lists/the-only-list-in-the-world/')
 
     def test_home_page_only_saves_items_when_necessary(self):
         request = HttpRequest()
         home_page(request)
         self.assertEqual(Item.objects.count(), 0)
-    def test_home_page_displays_all_list_items(self):
-        Item.objects.create(text='itemey 1')
-        Item.objects.create(text='itemey 2')
+   # def test_home_page_displays_all_list_items(self):
+   #     Item.objects.create(text='itemey 1')
+   #     Item.objects.create(text='itemey 2')
 
-        request = HttpRequest()
-        response = home_page(request)
+   #     request = HttpRequest()
+   #     response = home_page(request)
 
-        self.assertIn('itemey 1', response.content.decode())
-        self.assertIn('itemey 2', response.content.decode())
-    def test_when_no_Item(self):
-        request =HttpRequest()
-        response= home_page(request)
-        self.assertIn('yey, waktunya berlibur', response.content.decode())
-    def test_when_item_under_4(self):
-        Item.objects.create(text='')
-        Item.objects.create(text='')
-        Item.objects.create(text='')
-        Item.objects.create(text='')
-        request =HttpRequest()
-        response = home_page(request)
-        self.assertIn('sibuk tapi santai', response.content.decode())
+   #     self.assertIn('itemey 1', response.content.decode())
+   #     self.assertIn('itemey 2', response.content.decode())
+   # def test_when_no_Item(self):
+   #     request =HttpRequest()
+   #     response= home_page(request)
+   #     self.assertIn('yey, waktunya berlibur', response.content.decode())
+   # def test_when_item_under_4(self):
+   #     Item.objects.create(text='')
+   #     Item.objects.create(text='')
+   #     Item.objects.create(text='')
+   #     Item.objects.create(text='')
+   #     request =HttpRequest()
+   #     response = home_page(request)
+   #     self.assertIn('sibuk tapi santai', response.content.decode())
    
-    def test_when_item_morethan_4(self):
-        Item.objects.create(text='')
-        Item.objects.create(text='')
-        Item.objects.create(text='')
-        Item.objects.create(text='')
-        Item.objects.create(text='')
-        request =HttpRequest()
-        response = home_page(request)
-        self.assertIn('oh tidak', response.content.decode())
+   # def test_when_item_morethan_4(self):
+    #    Item.objects.create(text='')
+    #    Item.objects.create(text='')
+    #    Item.objects.create(text='')
+    #    Item.objects.create(text='')
+    #    Item.objects.create(text='')
+    #    request =HttpRequest()
+    #    response = home_page(request)
+    #    self.assertIn('oh tidak', response.content.decode())
     def test_coba_tag_monitoring(self):
         pass
                                            
@@ -118,4 +118,19 @@ class ItemModelTest(TestCase):
         self.assertEqual(first_saved_item.text, 'The first (ever) list item')
         self.assertEqual(second_saved_item.text, 'Item the second')
   
-# Create your tests here.
+# Create your tests here
+
+class ListViewTest(TestCase):
+
+    def test_uses_list_template(self):
+        response = self.client.get('/lists/the-only-list-in-the-world/')
+        self.assertTemplateUsed(response, 'list.html')
+
+    def test_displays_all_items(self):
+        Item.objects.create(text='itemey 1')
+        Item.objects.create(text='itemey 2')
+
+        response = self.client.get('/lists/the-only-list-in-the-world/') #1
+
+        self.assertContains(response, 'itemey 1') #2
+        self.assertContains(response, 'itemey 2') #3
