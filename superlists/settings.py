@@ -23,9 +23,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '2(*dmq3(47f=vqwmh%92_i$=bk@--x#sdqxc^4icgz4=ex2!6*'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['pmpltutorial.cloudapp.net']
 
 
 # Application definition
