@@ -25,7 +25,7 @@ SECRET_KEY = '2(*dmq3(47f=vqwmh%92_i$=bk@--x#sdqxc^4icgz4=ex2!6*'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['pmpltutorial.cloudapp.net']
+ALLOWED_HOSTS = ["pmpltutorial.cloudapp.net"]
 
 
 # Application definition
@@ -102,3 +102,5 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.abspath(os.path.join(BASE_DIR, '../static'))
+
+from .secret_key import SECRET_KEY
